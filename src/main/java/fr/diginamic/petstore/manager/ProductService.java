@@ -39,8 +39,8 @@ public class ProductService {
             return product;
     }
 
-    public void addToShop(Long idShop, Long idProduct) throws BusinessException {
-        productDao.addToShop(idShop, idProduct);
+    public void addToStore(Long idShop, Long idProduct) {
+        productDao.addToStore(idShop, idProduct);
     }
 
     private void validateProduct(String code, String label, ProdType type, Double price, BusinessException businessException){

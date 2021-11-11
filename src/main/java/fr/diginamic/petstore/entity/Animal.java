@@ -12,7 +12,7 @@ import java.sql.Date;
  */
 @Table(name = "Animal")
 @Entity
-@DiscriminatorColumn(name = "Specie")
+@DiscriminatorColumn(name = "specie")
 public abstract class Animal {
 
 	/**

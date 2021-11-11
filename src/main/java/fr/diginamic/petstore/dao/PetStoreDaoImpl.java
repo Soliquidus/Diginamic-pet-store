@@ -15,14 +15,13 @@ import javax.persistence.EntityManager;
 public class PetStoreDaoImpl implements PetStoreDao {
 
     @Override
-    public void createPetShop(PetStore petStore) {
+    public void createPetStore(PetStore petStore) {
 //        BusinessException businessException = new BusinessException();
         EntityManager em = HibernateUtil.getInstance();
         try{
             em.getTransaction().begin();
             em.persist(petStore);
             em.getTransaction().commit();
-            em.close();
         } catch (Exception e) {
             e.printStackTrace();
         }

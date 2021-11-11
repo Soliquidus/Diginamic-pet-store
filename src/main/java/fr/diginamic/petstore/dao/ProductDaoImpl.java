@@ -23,14 +23,13 @@ public class ProductDaoImpl implements ProductDao {
             em.getTransaction().begin();
             em.persist(product);
             em.getTransaction().commit();
-            em.close();
         } catch (Exception e) {
             e.printStackTrace();
         }
     }
 
     @Override
-    public void addToShop(Long idShop, Long idProduct) {
+    public void addToStore(Long idShop, Long idProduct) {
         PetStore petStore = em.find(PetStore.class, idShop);
         Product product = em.find(Product.class, idProduct);
         if (petStore != null && product != null) {

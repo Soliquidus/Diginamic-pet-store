@@ -48,4 +48,8 @@ public class AnimalService {
         return fish;
     }
 
+    public void addToStore(Long animalId, Long storeId){
+        animalDao.addAnimalToStore(animalId, storeId);
+    }
+
 }
