@@ -122,19 +122,4 @@ public abstract class Animal {
 		if (this.petStore != null) 
 			this.petStore.getAnimals().add(this);
 	}
-
-	@Override
-	public String toString() {
-		StringBuilder builder = new StringBuilder();
-		builder.append("Animal [id=");
-		builder.append(id);
-		builder.append(", birth=");
-		builder.append(birth);
-		builder.append(", color=");
-		builder.append(color);
-		builder.append("]");
-		return builder.toString();
-	}
-
-
 }

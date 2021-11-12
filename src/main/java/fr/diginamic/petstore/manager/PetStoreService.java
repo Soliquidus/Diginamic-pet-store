@@ -4,7 +4,8 @@ import fr.diginamic.petstore.dao.DaoFactory;
 import fr.diginamic.petstore.dao.PetStoreDao;
 import fr.diginamic.petstore.entity.Address;
 import fr.diginamic.petstore.entity.PetStore;
-import fr.diginamic.petstore.utils.ReadMessage;
+import fr.diginamic.petstore.entity.ProdType;
+import fr.diginamic.petstore.exception.ServiceException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -17,36 +18,42 @@ import org.slf4j.LoggerFactory;
  */
 public class PetStoreService {
     private static final Logger LOGGER = LoggerFactory.getLogger(PetStoreService.class);
-    ReadMessage readMessage;
     private final PetStoreDao petStoreDao;
 
     public PetStoreService() {
         this.petStoreDao = DaoFactory.getPetStoreDao();
     }
 
-    public PetStore addPetStore(String name, String managerName, Address address) {
-//        BusinessException businessException = new BusinessException();
+    public PetStore addPetStore(String name, String managerName, Address address) throws ServiceException {
         this.validatePetShop(name, managerName, address);
         PetStore petStore;
-//        if (businessException.hasNoErrors()) {
-            petStore = new PetStore();
-            petStore.setName(name);
-            petStore.setManagerName(managerName);
-            petStore.setAddress(address);
-            petStoreDao.createPetStore(petStore);
-//        } else {
-//            List<Integer> ErrorMessages = businessException.getErrorCodesList();
-//            for (Integer errorCode : ErrorMessages) {
-//                LOGGER.error(readMessage.getErrorMessage(errorCode));
-//            }
-//            throw businessException;
-//        }
+        petStore = new PetStore();
+        petStore.setName(name);
+        petStore.setManagerName(managerName);
+        petStore.setAddress(address);
+        petStoreDao.createPetStore(petStore);
         return petStore;
     }
 
-    private void validatePetShop(String name, String managerName, Address address) {
+    public void seeAnimals(Long storeId) {
+        petStoreDao.seeAnimals(storeId);
+    }
+
+    public void seeAnimalsPerSpecie(Long storeId, String specie) {
+        petStoreDao.seeAnimalsPerSpecie(storeId, specie);
+    }
+
+    public void seeProducts(Long storeId) {
+        petStoreDao.seeProducts(storeId);
+    }
+
+    public void seeProductsPerType(Long storeId, ProdType prodType) {
+        petStoreDao.seeProductsPerType(storeId, prodType);
+    }
+
+    private void validatePetShop(String name, String managerName, Address address) throws ServiceException {
         if (name == null || name.trim().length() > 50 || managerName == null || managerName.trim().length() > 50 || address == null) {
-//            businessException.addError(ErrorCodesService.PET_SHOP_CREATION_RULES);
+            throw new ServiceException("Validation constraint not passed.");
         }
     }
 

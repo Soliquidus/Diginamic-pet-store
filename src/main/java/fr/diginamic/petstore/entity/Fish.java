@@ -47,16 +47,4 @@ public class Fish extends Animal {
 	public void setLivingEnv(FishLivEnv livingEnv) {
 		this.livingEnv = livingEnv;
 	}
-
-	@Override
-	public String toString() {
-		StringBuilder builder = new StringBuilder();
-		builder.append(super.toString());
-		builder.append("\n --> Fish [livingEnv=");
-		builder.append(livingEnv);
-		builder.append("]");
-		return builder.toString();
-	}
-	
-	
 }

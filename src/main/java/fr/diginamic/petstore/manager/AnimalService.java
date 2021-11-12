@@ -6,9 +6,6 @@ import fr.diginamic.petstore.entity.Animal;
 import fr.diginamic.petstore.entity.Cat;
 import fr.diginamic.petstore.entity.Fish;
 import fr.diginamic.petstore.entity.FishLivEnv;
-import fr.diginamic.petstore.utils.ReadMessage;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import java.sql.Date;
 
@@ -20,8 +17,6 @@ import java.sql.Date;
  * @date 09 /11/2021
  */
 public class AnimalService {
-    private static final Logger LOGGER = LoggerFactory.getLogger(AnimalService.class);
-    ReadMessage readMessage;
     private final AnimalDao animalDao;
 
     public AnimalService() {
@@ -48,8 +43,15 @@ public class AnimalService {
         return fish;
     }
 
-    public void addToStore(Long animalId, Long storeId){
-        animalDao.addAnimalToStore(animalId, storeId);
+    public void seeAllAnimals(){
+        animalDao.seeAllAnimals();
+    }
+    public void seeAllAnimalsPerSpecie(String specie){
+        animalDao.seeAllAnimalsPerSpecie(specie);
+    }
+
+    public void addToStore(Long storeId, Long animalId ){
+        animalDao.addAnimalToStore(storeId, animalId );
     }
 
 }

@@ -9,7 +9,7 @@ import java.util.Set;
  *
  * @author Tibo Pfeifer
  * @version 1.0
- * @date 09 /11/2021
+ * @date 09 /11/2021s
  */
 @Table(name = "Pet_Store")
 @Entity
@@ -35,8 +35,8 @@ public class PetStore {
 	/**
 	 * The Animals.
 	 */
-	@OneToMany(mappedBy = "petStore", cascade = CascadeType.ALL)
-	private Set<Animal> animals = new HashSet<Animal>();
+	@OneToMany(mappedBy = "petStore")
+	private Set<Animal> animals = new HashSet<>();
 
 	/**
 	 * The Products.
@@ -45,7 +45,7 @@ public class PetStore {
 	@JoinTable(name = "Shop_Products",
 			joinColumns = @JoinColumn(name = "store_id", referencedColumnName = "ID"),
 			inverseJoinColumns = @JoinColumn(name = "product_id", referencedColumnName = "ID"))
-	private Set<Product> products = new HashSet<Product>();
+	private Set<Product> products = new HashSet<>();
 
 
 	/**
@@ -217,21 +217,4 @@ public class PetStore {
 	public void removeProduct(Product product) {
 		product.getPetStores().remove(this);
 	}
-
-	@Override
-	public String toString() {
-		StringBuilder builder = new StringBuilder();
-		builder.append("PetStore [id=");
-		builder.append(id);
-		builder.append(", name=");
-		builder.append(name);
-		builder.append(", managerName=");
-		builder.append(managerName);
-		builder.append(", address=");
-		builder.append(address.toString());
-		builder.append("]");
-		return builder.toString();
-	}
-	
-	
 }
