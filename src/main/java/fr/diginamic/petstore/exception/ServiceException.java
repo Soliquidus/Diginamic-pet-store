@@ -1,7 +1,7 @@
 package fr.diginamic.petstore.exception;
 
 /**
- * Class ServiceExceptions
+ * To handle custom exceptions
  *
  * @author Tibo Pfeifer
  * @version 1.0
