@@ -35,13 +35,13 @@ public class PetStore {
 	/**
 	 * The Animals.
 	 */
-	@OneToMany(mappedBy = "petStore")
+	@OneToMany(mappedBy = "petStore", cascade = CascadeType.REMOVE)
 	private Set<Animal> animals = new HashSet<>();
 
 	/**
 	 * The Products.
 	 */
-	@ManyToMany
+	@ManyToMany(cascade = CascadeType.REMOVE)
 	@JoinTable(name = "Shop_Products",
 			joinColumns = @JoinColumn(name = "store_id", referencedColumnName = "ID"),
 			inverseJoinColumns = @JoinColumn(name = "product_id", referencedColumnName = "ID"))

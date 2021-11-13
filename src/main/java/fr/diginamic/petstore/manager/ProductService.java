@@ -5,8 +5,6 @@ import fr.diginamic.petstore.dao.ProductDao;
 import fr.diginamic.petstore.entity.ProdType;
 import fr.diginamic.petstore.entity.Product;
 import fr.diginamic.petstore.exception.ServiceException;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 /**
  * Class PetShopService
@@ -16,13 +14,30 @@ import org.slf4j.LoggerFactory;
  * @date 09/11/2021
  */
 public class ProductService {
-    private static final Logger LOGGER = LoggerFactory.getLogger(ProductService.class);
+    /**
+     * The Product dao.
+     */
     private final ProductDao productDao;
 
+    /**
+     * Instantiates a new Product service.
+     */
     public ProductService() {
         this.productDao = DaoFactory.getProductDao();
     }
 
+    // -- Functions --
+
+    /**
+     * Add product product.
+     *
+     * @param code  the code
+     * @param label the label
+     * @param type  the type
+     * @param price the price
+     * @return the product
+     * @throws ServiceException the service exception
+     */
     public Product addProduct(String code, String label, ProdType type, Double price) throws ServiceException {
         this.validateProduct(code, label, type, price);
         Product product;
@@ -35,18 +50,73 @@ public class ProductService {
         return product;
     }
 
+    /**
+     * Update product.
+     *
+     * @param productId the product id
+     * @param code      the code
+     * @param label     the label
+     * @param type      the type
+     * @param price     the price
+     */
+    public void updateProduct(Long productId, String code, String label, ProdType type, Double price) throws ServiceException {
+        Product product = productDao.getProductById(productId);
+        this.validateProduct(code, label, type, price);
+        product.setCode(code);
+        product.setLabel(label);
+        product.setType(type);
+        product.setPrice(price);
+        productDao.updateProduct(product);
+    }
+
+    /**
+     * Delete product.
+     *
+     * @param productId the product id
+     */
+    public void deleteProduct(Long productId){
+        productDao.deleteProduct(productId);
+    }
+
+
+    /**
+     * See all products.
+     */
     public void seeAllProducts() {
         productDao.seeAllProducts();
     }
 
-    public void seeAllProductsPerType(ProdType prodType) {
-        productDao.seeAllProductsPerType(prodType);
+    /**
+     * See all products per type.
+     *
+     * @param prodType the prod type
+     */
+    public void seeAllProductsByType(ProdType prodType) {
+        productDao.seeAllProductsByType(prodType);
     }
 
-    public void addToStore(Long idShop, Long idProduct) {
-        productDao.addToStore(idShop, idProduct);
+    /**
+     * Add to store.
+     *
+     * @param idStore    the id store
+     * @param idProduct the id product
+     */
+    public void addToStore(Long idStore, Long idProduct) {
+        productDao.addToStore(idStore, idProduct);
     }
 
+    // -- Validations --
+    //TODO: 13/11/2021 --> will be useful in further updates when the client UI will be implemented, this will evolve in the future
+
+    /**
+     * Validate product.
+     *
+     * @param code  the code
+     * @param label the label
+     * @param type  the type
+     * @param price the price
+     * @throws ServiceException the service exception
+     */
     private void validateProduct(String code, String label, ProdType type, Double price) throws ServiceException {
         if (code == null || code.trim().length() > 50 || label == null || label.trim().length() > 50 || type == null ||
                 price == null) {

@@ -1,9 +1,6 @@
 package fr.diginamic.petstore.dao;
 
-import fr.diginamic.petstore.entity.Animal;
-import fr.diginamic.petstore.entity.PetStore;
-import fr.diginamic.petstore.entity.ProdType;
-import fr.diginamic.petstore.entity.Product;
+import fr.diginamic.petstore.entity.*;
 import fr.diginamic.petstore.utils.HibernateUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -12,16 +9,26 @@ import javax.persistence.EntityManager;
 import javax.persistence.TypedQuery;
 
 /**
- * Class PetShopDao
+ * Class PetShopDaoImpl
  *
  * @author Tibo Pfeifer
  * @version 1.0
  * @date 09/11/2021
  */
 public class PetStoreDaoImpl implements PetStoreDao {
+    /**
+     * The Em.
+     */
     EntityManager em = HibernateUtil.getInstance();
+    /**
+     * The constant LOGGER.
+     */
     private static final Logger LOGGER = LoggerFactory.getLogger("daoLogger");
 
+    /**
+     * Create a new PetStore in database
+     * @param petStore the pet store
+     */
     @Override
     public void createPetStore(PetStore petStore) {
         try {
@@ -35,6 +42,63 @@ public class PetStoreDaoImpl implements PetStoreDao {
         }
     }
 
+    /**
+     * Update an existing PetStore
+     * @param store the store
+     */
+    @Override
+    public void updatePetStore(PetStore store) {
+            if(store != null){
+                em.getTransaction().begin();
+                em.merge(store);
+                em.getTransaction().commit();
+                LOGGER.info(store.getName() + " updated.");
+            } else {
+                LOGGER.error("No store match for given ID.");
+            }
+        }
+
+    /**
+     * Delete an existing PetStore
+      * @param storeId the store id
+     */
+    @Override
+    public void deletePetStore(Long storeId) {
+        try {
+            PetStore store = em.find(PetStore.class, storeId);
+            if(store != null){
+                String name = store.getName();
+                em.getTransaction().begin();
+                em.remove(store);
+                em.getTransaction().commit();
+                LOGGER.info("\"" + name + "\"" + " deleted.");
+            } else {
+                LOGGER.error("No store match for given ID.");
+            }
+        } catch (Exception e){
+            LOGGER.error("Global error while store suppression.");
+            e.printStackTrace();
+        }
+    }
+
+    /**
+     * Get a store by given ID
+     * @param storeId the store id
+     * @return the store object
+     */
+    @Override
+    public PetStore getStoreById(Long storeId) {
+        PetStore store = em.find(PetStore.class, storeId);
+        if(store == null){
+            LOGGER.error("No store found with given ID.");
+        }
+        return store;
+    }
+
+    /**
+     * See all animals in one store
+     * @param storeId the store id
+     */
     @Override
     public void seeAnimals(Long storeId) {
         try {
@@ -59,8 +123,13 @@ public class PetStoreDaoImpl implements PetStoreDao {
         }
     }
 
+    /**
+     * See all animals by a given specie in a given store
+     * @param storeId the store id
+     * @param specie  the specie
+     */
     @Override
-    public void seeAnimalsPerSpecie(Long storeId, String specie) {
+    public void seeAnimalsBySpecie(Long storeId, String specie) {
         try {
             TypedQuery<PetStore> query = em.createQuery("SELECT p from PetStore p WHERE p.id='" + storeId + "'", PetStore.class);
             PetStore store = query.getResultList().get(0);
@@ -85,6 +154,10 @@ public class PetStoreDaoImpl implements PetStoreDao {
         }
     }
 
+    /**
+     * See all products in a given store
+     * @param storeId the store id
+     */
     @Override
     public void seeProducts(Long storeId) {
         try {
@@ -109,6 +182,11 @@ public class PetStoreDaoImpl implements PetStoreDao {
         }
     }
 
+    /**
+     * See all products by a given type in a given store
+     * @param storeId  the store id
+     * @param prodType the prod type
+     */
     @Override
     public void seeProductsPerType(Long storeId, ProdType prodType) {
         try {

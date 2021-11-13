@@ -3,6 +3,13 @@ package fr.diginamic.petstore.utils;
 import javax.persistence.EntityManager;
 import javax.persistence.Persistence;
 
+/**
+ * Util class to get an EntityManager instance without having to configure it each time
+ *
+ * @author Tibo Pfeifer
+ * @version 1.0
+ * @date 09/11/2021
+ */
 public class HibernateUtil {
 
     /** The em. */

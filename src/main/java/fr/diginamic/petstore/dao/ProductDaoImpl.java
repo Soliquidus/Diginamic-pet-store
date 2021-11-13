@@ -13,16 +13,20 @@ import java.util.List;
 import java.util.Set;
 
 /**
- * Class PetShopDao
+ * Class ProductDaoImpl
  *
  * @author Tibo Pfeifer
  * @version 1.0
- * @date 09 /11/2021
+ * @date 09/11/2021
  */
 public class ProductDaoImpl implements ProductDao {
     private static final Logger LOGGER = LoggerFactory.getLogger("daoLogger");
     EntityManager em = HibernateUtil.getInstance();
 
+    /**
+     * Create a new product in database
+     * @param product the product
+     */
     @Override
     public void createProduct(Product product) {
         try {
@@ -36,6 +40,64 @@ public class ProductDaoImpl implements ProductDao {
         }
     }
 
+    /**
+     * Update an existing product in database
+     * @param product the product
+     */
+    @Override
+    public void updateProduct(Product product) {
+        if(product != null){
+            em.getTransaction().begin();
+            em.merge(product);
+            em.getTransaction().commit();
+            LOGGER.info(product.getLabel() + " updated.");
+        } else {
+            LOGGER.error("No product match for given ID.");
+        }
+    }
+
+    /**
+     * Delete a product by its ID
+     * @param productId the product id
+     */
+    @Override
+    public void deleteProduct(Long productId) {
+        try {
+            Product product = em.find(Product.class, productId);
+            if(product != null){
+                String name = product.getLabel();
+                em.getTransaction().begin();
+                em.remove(product);
+                em.getTransaction().commit();
+                LOGGER.info("\"" + name + "\"" + " deleted.");
+            } else {
+                LOGGER.error("No product match for given ID.");
+            }
+        } catch (Exception e){
+            LOGGER.error("Global error while product suppression.");
+            e.printStackTrace();
+        }
+    }
+
+    /**
+     * Get a product by its given ID
+     * @param productId the product id
+     * @return the product object
+     */
+    @Override
+    public Product getProductById(Long productId) {
+        Product product = em.find(Product.class, productId);
+        if(product == null){
+            LOGGER.error("No product found with given ID.");
+        }
+        return product;
+    }
+
+    /**
+     * Add a product to a shop by their given IDs
+     * @param idShop    the id shop
+     * @param idProduct the id product
+     */
     @Override
     public void addToStore(Long idShop, Long idProduct) {
         PetStore petStore = em.find(PetStore.class, idShop);
@@ -55,6 +117,9 @@ public class ProductDaoImpl implements ProductDao {
         }
     }
 
+    /**
+     * See all products in database
+     */
     @Override
     public void seeAllProducts() {
         try {
@@ -81,8 +146,12 @@ public class ProductDaoImpl implements ProductDao {
         }
     }
 
+    /**
+     * See all products by their given type.
+     * @param prodType the prod type
+     */
     @Override
-    public void seeAllProductsPerType(ProdType prodType) {
+    public void seeAllProductsByType(ProdType prodType) {
         try {
             TypedQuery<Product> query = em.createQuery("SELECT p FROM Product p", Product.class);
             List<Product> products = query.getResultList();
