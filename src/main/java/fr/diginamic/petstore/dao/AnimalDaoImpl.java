@@ -13,7 +13,7 @@ import javax.persistence.TypedQuery;
 import java.util.List;
 
 /**
- * All PetStore Entity database manipulations
+ * All Animal Entity database manipulations
  *
  * @author Tibo Pfeifer
  * @version 1.0

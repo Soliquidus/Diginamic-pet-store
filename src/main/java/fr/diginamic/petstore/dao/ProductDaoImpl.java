@@ -13,7 +13,7 @@ import java.util.List;
 import java.util.Set;
 
 /**
- * Class ProductDaoImpl
+ * All Product Entity database manipulations
  *
  * @author Tibo Pfeifer
  * @version 1.0

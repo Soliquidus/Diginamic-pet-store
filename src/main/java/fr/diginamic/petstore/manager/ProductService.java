@@ -5,6 +5,8 @@ import fr.diginamic.petstore.dao.ProductDao;
 import fr.diginamic.petstore.entity.ProdType;
 import fr.diginamic.petstore.entity.Product;
 import fr.diginamic.petstore.exception.ServiceException;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * Class PetShopService
@@ -18,6 +20,11 @@ public class ProductService {
      * The Product dao.
      */
     private final ProductDao productDao;
+
+    /**
+     * The constant Logger
+     */
+    private static final Logger LOGGER = LoggerFactory.getLogger(ProductService.class);
 
     /**
      * Instantiates a new Product service.
@@ -47,6 +54,7 @@ public class ProductService {
         product.setType(type);
         product.setPrice(price);
         productDao.createProduct(product);
+        LOGGER.info("Product created.");
         return product;
     }
 
@@ -67,6 +75,7 @@ public class ProductService {
         product.setType(type);
         product.setPrice(price);
         productDao.updateProduct(product);
+        LOGGER.info("Product updated.");
     }
 
     /**
@@ -76,6 +85,7 @@ public class ProductService {
      */
     public void deleteProduct(Long productId){
         productDao.deleteProduct(productId);
+        LOGGER.info("Product deleted.");
     }
 
 

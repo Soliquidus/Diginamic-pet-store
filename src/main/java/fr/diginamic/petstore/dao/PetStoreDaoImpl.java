@@ -9,7 +9,7 @@ import javax.persistence.EntityManager;
 import javax.persistence.TypedQuery;
 
 /**
- * Class PetShopDaoImpl
+ * All PetStore Entity database manipulations
  *
  * @author Tibo Pfeifer
  * @version 1.0
